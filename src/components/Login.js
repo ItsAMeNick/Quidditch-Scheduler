@@ -27,10 +27,9 @@ class Login extends Component {
         firestore.collection("users").where("username","==",this.state.username).get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data());
-                console.log(data); // array of cities objects
+                console.log(data);
                 if (data.length === 1) {
                     console.log("Username found")
-                    //let hash = bcrypt.hashSync(this.state.password, 10);
                     if (bcrypt.compareSync(this.state.password, data[0].password)) {
                         console.log("Good Password");
                         this.props.updateAuth();

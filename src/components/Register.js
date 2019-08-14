@@ -18,29 +18,38 @@ class Register extends Component {
         this.state = {
             username: "",
             password: "",
-            first_name: ""
+            first_name: "",
+            last_name: ""
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(e) {
-        console.log("Validating")
+        console.log("Registering")
         firestore.collection("users").where("username","==",this.state.username).get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data());
-                console.log(data); // array of cities objects
+                console.log(data);
                 if (data.length === 1) {
-                    console.log("Username found")
-                    //let hash = bcrypt.hashSync(this.state.password, 10);
-                    if (bcrypt.compareSync(this.state.password, data[0].password)) {
-                        console.log("Good Password");
-                    } else {
-                        console.log('Bad Password');
-                    }
+                    console.log("Username already exists")
                 } else {
-                    console.log("Username not found")
+                    console.log("Username is avaliable")
+                    let player = {
+                        first_name: this.state.first_name,
+                        last_name: this.state.last_name
+                    }
+                    firestore.collection("players").add(player)
+                    .then(item => {
+                        item.get().then(data => {
+                            let user = {
+                                username: this.state.username,
+                                password: bcrypt.hashSync(this.state.password, 10),
+                                player_id: data.id
+                            }
+                            firestore.collection("users").add(user);
+                        });
+                    });
                 }
-                this.props.updateAuth()
             });
     }
 
@@ -62,10 +71,9 @@ class Register extends Component {
             />
             <br/>
             <TextField
-                hintText="Enter your Email"
-                type="email"
-                floatingLabelText="Email"
-                onChange = {(event,newValue) => this.setState({email:newValue})}
+                hintText="Enter a Username"
+                floatingLabelText="Username"
+                onChange = {(event,newValue) => this.setState({username:newValue})}
             />
             <br/>
             <TextField
@@ -75,7 +83,7 @@ class Register extends Component {
                 onChange = {(event,newValue) => this.setState({password:newValue})}
             />
             <br/>
-            <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+            <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleSubmit}/>
             </div>
          </MuiThemeProvider>
         );
