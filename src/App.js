@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 
-import Login from "./components/Login.js";
-import Register from "./components/Register.js";
+import Onboard from "./components/Onboard.js";
 
 class App extends Component {
     constructor(props) {
@@ -15,9 +14,9 @@ class App extends Component {
             <div>
             {this.props.authenticated ?
             <div>
+                You're In!
             </div> : <div>
-                <Login/>
-                <Register/>
+                <Onboard/>
             </div>}
             </div>
         );
