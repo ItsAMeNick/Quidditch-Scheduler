@@ -18,7 +18,7 @@ class Onboard extends Component {
             password:'',
             loginscreen:[],
             loginmessage:'',
-            buttonLabel:'Register',
+            buttonLabel:'Set-up a new account',
             isLogin:true
         };
         this.handleSwitch = this.handleSwitch.bind(this);
@@ -44,7 +44,7 @@ class Onboard extends Component {
             this.setState({
                 loginscreen:loginscreen,
                 loginmessage:loginmessage,
-                buttonLabel:"Login",
+                buttonLabel:"Already have an account?",
                 isLogin:false
             })
         }
@@ -55,7 +55,7 @@ class Onboard extends Component {
             this.setState({
                 loginscreen:loginscreen,
                 loginmessage:loginmessage,
-                buttonLabel:"Register",
+                buttonLabel:"Set-up a new account",
                 isLogin:true
             })
         }
@@ -63,7 +63,7 @@ class Onboard extends Component {
 
     render() {
         return (
-            <div className="loginscreen">
+            <div>
                 {this.state.loginscreen}
                 <div>
                     {this.state.loginmessage}

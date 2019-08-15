@@ -83,7 +83,7 @@ class Register extends Component {
                 onChange = {(event,newValue) => this.setState({password:newValue})}
             />
             <br/>
-            <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleSubmit}/>
+            <RaisedButton label="Register" primary={true} style={style} onClick={this.handleSubmit}/>
             </div>
          </MuiThemeProvider>
         );

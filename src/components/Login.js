@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import firestore from "../modules/firestore.js";
 import bcrypt from "bcryptjs";
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { ThemeProvider } from '@material-ui/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 var style = {
     margin: 15,
@@ -45,9 +45,11 @@ class Login extends Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            <ThemeProvider>
                 <div>
-                <AppBar title="Login"/>
+                <AppBar position="static">
+                    Login
+                </AppBar>
                 <TextField
                     hintText="Enter your Username"
                     floatingLabelText="Username"
@@ -61,9 +63,9 @@ class Login extends Component {
                     onChange = {(event,newValue) => this.setState({password:newValue})}
                 />
                 <br/>
-                <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleSubmit}/>
+                <Button label="Login" primary={true} style={style} onClick={this.handleSubmit}/>
                 </div>
-            </MuiThemeProvider>
+            </ThemeProvider>
         );
     }
 }
