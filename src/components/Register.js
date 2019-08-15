@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import firestore from "../modules/firestore.js";
 import bcrypt from "bcryptjs";
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { ThemeProvider } from '@material-ui/styles';
 
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+import theme from "./theme.js";
 var style = {
     margin: 15,
 };
@@ -55,9 +56,8 @@ class Register extends Component {
 
     render() {
         return (
-        <MuiThemeProvider>
+        <ThemeProvider theme={theme}>
             <div>
-            <AppBar title="Register"/>
             <TextField
                 hintText="Enter your First Name"
                 floatingLabelText="First Name"
@@ -83,9 +83,11 @@ class Register extends Component {
                 onChange = {(event,newValue) => this.setState({password:newValue})}
             />
             <br/>
-            <RaisedButton label="Register" primary={true} style={style} onClick={this.handleSubmit}/>
+			<Button variant="contained" size="large" color="primary" style={style} onClick={this.handleSubmit}>
+				Register
+			</Button>
             </div>
-         </MuiThemeProvider>
+         </ThemeProvider>
         );
     }
 }
