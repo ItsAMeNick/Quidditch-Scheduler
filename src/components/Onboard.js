@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 
 import { ThemeProvider } from '@material-ui/styles';
+
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -98,10 +99,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateAuth: () => dispatch({
-        type: "authenticate",
-        payload: null
-    })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboard);

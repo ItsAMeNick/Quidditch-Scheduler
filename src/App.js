@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 
 import Onboard from "./components/Onboard.js";
+import HomePage from "./components/HomePage.js"
 
 class App extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class App extends Component {
             <div>
             {this.props.authenticated ?
             <div>
-                You're In!
+                <HomePage/>
             </div> : <div>
                 <Onboard/>
             </div>}

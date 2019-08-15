@@ -4,6 +4,7 @@ import firestore from "../modules/firestore.js";
 import bcrypt from "bcryptjs";
 
 import { ThemeProvider } from '@material-ui/styles';
+
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -35,7 +36,6 @@ class Login extends Component {
 		} else if (event.target.id === "password") {
 			this.setState({password: event.target.value})
 		}
-
 	}
 
     handleSubmit(event) {
@@ -45,10 +45,9 @@ class Login extends Component {
                 const data = querySnapshot.docs.map(doc => doc.data());
                 console.log(data);
                 if (data.length === 1) {
-                    console.log("Username found")
                     if (bcrypt.compareSync(this.state.password, data[0].password)) {
-                        console.log("Good Password");
-                        this.props.updateAuth();
+                        this.props.updateAuth(data[0].player_id);
+						this.props.updateAdmin(data[0].admin);
                     } else {
                         console.log('Bad Password');
                     }
@@ -86,6 +85,7 @@ class Login extends Component {
 					value={this.state.password}
 					onChange={this.handleChange}
 					fullWidth
+					margin="normal"
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
@@ -119,9 +119,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateAuth: () => dispatch({
+    updateAuth: (id) => dispatch({
         type: "authenticate",
-        payload: null
+        payload: id
+    }),
+	updateAdmin: (admin) => dispatch({
+        type: "set_admin",
+        payload: admin
     })
 });
 
