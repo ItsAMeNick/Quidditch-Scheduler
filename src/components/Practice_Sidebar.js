@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import firestore from "../modules/firestore.js";
+import _ from "lodash";
 
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -29,28 +31,74 @@ class Practices extends Component {
 
     isAccepted(id) {
         for (let p in this.props.practices) {
-            console.log(id, this.props.practices[p].accepted)
             if (this.props.practices[p].id !== id) continue;
             if (this.props.practices[p].accepted.includes(this.props.player_id)) {
-                return "primary";
+                return true;
             } else {
-                return "default";
+                return false;
             }
         }
-        return "default"
+        return false;
     }
 
     isDenied(id) {
         for (let p in this.props.practices) {
-            console.log(id, this.props.practices[p].accepted)
             if (this.props.practices[p].id !== id) continue;
             if (this.props.practices[p].denied.includes(this.props.player_id)) {
-                return "primary";
+                return true;
             } else {
-                return "default";
+                return false;
             }
         }
-        return "default"
+        return false;
+    }
+
+    acceptPractice(id) {
+        if (this.isAccepted(id)) return null;
+        firestore.collection("practices").doc(id).get().then(doc => {
+            let newPractice = doc.data();
+            newPractice.accepted.push(this.props.player_id);
+            if (this.isDenied(id)) {
+                newPractice.denied = _.remove(newPractice.denied, item => {
+                    return item === id;
+                });
+            }
+            firestore.collection("practices").doc(id).set(newPractice);
+
+            let practices = _.cloneDeep(this.props.practices);
+            for (let p in practices) {
+                if (practices[p].id === id) {
+                    practices[p] = newPractice;
+                    practices[p].id = id;
+                }
+            }
+            this.props.updatePractices(practices);
+            this.forceUpdate();
+        });
+    }
+
+    denyPractice(id) {
+        if (this.isDenied(id)) return null;
+        firestore.collection("practices").doc(id).get().then(doc => {
+            let newPractice = doc.data();
+            newPractice.denied.push(this.props.player_id);
+            if (this.isAccepted(id)) {
+                newPractice.accepted = _.remove(newPractice.accepted, item => {
+                    return item === id;
+                });
+            }
+            firestore.collection("practices").doc(id).set(newPractice);
+
+            let practices = _.cloneDeep(this.props.practices);
+            for (let p in practices) {
+                if (practices[p].id === id) {
+                    practices[p] = newPractice;
+                    practices[p].id = id;
+                }
+            }
+            this.props.updatePractices(practices);
+            this.forceUpdate();
+        });
     }
 
     loadPractices() {
@@ -71,10 +119,10 @@ class Practices extends Component {
                         style = {{marginLeft: "20px"}}
                         />
                     <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isAccepted(item.id)}>
+                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isAccepted(item.id) ? "primary" : "default"} onClick={() => this.acceptPractice(item.id)}>
                             <UpVote/>
                         </IconButton>
-                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isDenied(item.id)}>
+                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isDenied(item.id) ? "primary" : "default"} onClick={() => this.denyPractice(item.id)}>
                             <DownVote/>
                         </IconButton>
                         {this.props.admin_mode ?
@@ -114,6 +162,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    updatePractices: (practices) => dispatch({
+        type: "update_practices",
+        payload: practices
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Practices);

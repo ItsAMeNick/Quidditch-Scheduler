@@ -32,18 +32,14 @@ class HomePage extends Component {
         window.addEventListener('resize', this.updateWindowDimensions);
 
         //Get the Player's Information
-		console.log(this.props.player_id);
 		firestore.collection("players").doc(this.props.player_id).get()
 			.then(doc => {
-				console.log(doc.data());
 				this.setState(doc.data());
 			});
 
         firestore.collection("practices").get()
 			.then(querySnapshot => {
-				console.log(querySnapshot)
 				let data = querySnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}});
-				console.log(data);
 				this.props.storePractices(data);
                 this.props.setOpenPractice(data[0].id)
 			});
