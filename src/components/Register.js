@@ -25,6 +25,7 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            email: "",
             username: "",
             password: "",
             first_name: "",
@@ -39,11 +40,12 @@ class Register extends Component {
     }
 
 	handleChange(event) {
-		console.log(event.target.checked)
 		if (event.target.id === "username") {
 			this.setState({username: event.target.value})
 		} else if (event.target.id === "password") {
 			this.setState({password: event.target.value})
+		} else if (event.target.id === "email") {
+			this.setState({email: event.target.value})
 		}  else if (event.target.id === "first_name") {
 			this.setState({first_name: event.target.value})
 		}  else if (event.target.id === "last_name") {
@@ -85,6 +87,7 @@ class Register extends Component {
                     .then(item => {
                         item.get().then(data => {
                             let user = {
+                                email: this.state.email,
                                 username: this.state.username.toLowerCase(),
                                 password: bcrypt.hashSync(this.state.password, 10),
                                 player_id: data.id,
@@ -170,6 +173,15 @@ class Register extends Component {
 						id = "chck_seeker"
 					/>
 				}
+			/>
+            <TextField
+				id="email"
+				label="Email"
+				value={this.state.email}
+				onChange={this.handleChange}
+				margin="normal"
+				variant="outlined"
+				fullWidth
 			/>
 			<TextField
 				id="username"
