@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d08d2238a96d4588f48e627abffa3279",
+    "revision": "91ab35629d39a5a23dc6e583811f68b5",
     "url": "/Quidditch-Scheduler/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Quidditch-Scheduler/static/js/2.443b9fca.chunk.js"
   },
   {
-    "revision": "c4b36fcbc9a90ff58ed1",
-    "url": "/Quidditch-Scheduler/static/js/main.bc82fe7e.chunk.js"
+    "revision": "50b7c99f9c9f99a77594",
+    "url": "/Quidditch-Scheduler/static/js/main.e8c98192.chunk.js"
   },
   {
     "revision": "37742c3b96301ada23e0",
