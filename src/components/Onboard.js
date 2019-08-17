@@ -79,7 +79,7 @@ class Onboard extends Component {
 				</AppBar>
 				<Grid container>
 					<Grid item xs={true}></Grid>
-					<Grid item xs={3}>
+					<Grid item xs={9}>
 					{this.state.loginscreen}
 					</Grid>
 					<Grid item xs={true}></Grid>
