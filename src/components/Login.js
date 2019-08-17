@@ -39,11 +39,9 @@ class Login extends Component {
 	}
 
     handleSubmit(event) {
-        console.log("Validating")
-        firestore.collection("users").where("username","==",this.state.username).get()
+        firestore.collection("users").where("username","==",this.state.username.toLowerCase()).get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data());
-                console.log(data);
                 if (data.length === 1) {
                     if (bcrypt.compareSync(this.state.password, data[0].password)) {
                         this.props.updateAuth(data[0].player_id);

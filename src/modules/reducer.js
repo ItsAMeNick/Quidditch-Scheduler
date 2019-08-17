@@ -22,6 +22,13 @@ const sCubeReducer = (state = initialState, action) => {
         return newState;
     }
 
+    case "logout": {
+        let newState = _.cloneDeep(state);
+        newState.authenticated = false;
+		newState.player_id = "";
+        return newState;
+    }
+
 	case "set_admin": {
         let newState = _.cloneDeep(state);
         newState.admin_mode = action.payload;

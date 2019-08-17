@@ -85,7 +85,7 @@ class Register extends Component {
                     .then(item => {
                         item.get().then(data => {
                             let user = {
-                                username: this.state.username,
+                                username: this.state.username.toLowerCase(),
                                 password: bcrypt.hashSync(this.state.password, 10),
                                 player_id: data.id,
 								admin: false

@@ -7,11 +7,13 @@ import View from "./Practice_View.js";
 
 import { ThemeProvider } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Admin from '@material-ui/icons/VerifiedUser';
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
 
 import theme from "./theme.js";
 
@@ -84,9 +86,12 @@ class HomePage extends Component {
 						<Typography variant="h4">
 							Welcome, {this.state.first_name}
 						</Typography>
-                        {this.props.admin_mode ?
+                        {this.props.admin_mode ? //location.reload();
                             <Admin style={{marginLeft: "auto"}}/>
                         : null}
+                        <IconButton edge="end" onClick={() => this.props.logout()}style={{marginLeft: "auto"}}>
+                            <LogoutIcon/>
+                        </IconButton>
 					</Toolbar>
 				</AppBar>
             </div>
@@ -108,6 +113,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     updateAuth: () => dispatch({
         type: "authenticate",
+        payload: null
+    }),
+    logout: () => dispatch({
+        type: "logout",
         payload: null
     }),
     storePractices: (practices) => dispatch({
