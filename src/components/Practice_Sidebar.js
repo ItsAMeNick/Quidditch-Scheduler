@@ -1,0 +1,119 @@
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+
+import { ThemeProvider } from '@material-ui/styles';
+
+import AppBar from '@material-ui/core/AppBar';
+import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import UpVote from '@material-ui/icons/ThumbUp';
+import DownVote from '@material-ui/icons/ThumbDown';
+
+import theme from "./theme.js";
+
+class Practices extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    isAccepted(id) {
+        for (let p in this.props.practices) {
+            console.log(id, this.props.practices[p].accepted)
+            if (this.props.practices[p].id !== id) continue;
+            if (this.props.practices[p].accepted.includes(this.props.player_id)) {
+                return "primary";
+            } else {
+                return "default";
+            }
+        }
+        return "default"
+    }
+
+    isDenied(id) {
+        for (let p in this.props.practices) {
+            console.log(id, this.props.practices[p].accepted)
+            if (this.props.practices[p].id !== id) continue;
+            if (this.props.practices[p].denied.includes(this.props.player_id)) {
+                return "primary";
+            } else {
+                return "default";
+            }
+        }
+        return "default"
+    }
+
+    loadPractices() {
+        if (!this.props.practices) return null;
+        return this.props.practices.map(item => {
+            return(
+                <ListItem button key={item.id}>
+                    <ListItemAvatar>
+                        <Avatar style={{width: "60px", height: "60px"}}>
+                        <Typography variant="h5" style={{margin: "10px"}}>
+                            {item.day[0]+"/"+item.day[1]}
+                        </Typography>
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary = {item.location}
+                        secondary = {item.start[0]+":"+(item.start[1] < 10 ? "0"+item.start[1] : item.start[1])+(item.start[2] === item.end[2] ? "" : " ("+item.start[2]+")")+" - "+item.end[0]+":"+(item.end[1] < 10 ? "0"+item.end[1] : item.end[1])+" ("+item.end[2]+")"}
+                        style = {{marginLeft: "20px"}}
+                        />
+                    <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isAccepted(item.id)}>
+                            <UpVote/>
+                        </IconButton>
+                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isDenied(item.id)}>
+                            <DownVote/>
+                        </IconButton>
+                        {this.props.admin_mode ?
+                            <IconButton edge="end" aria-label="edit">
+                                <EditIcon/>
+                            </IconButton>
+                            : null}
+                    </ListItemSecondaryAction>
+                </ListItem>
+            )
+        });
+    }
+
+    render() {
+        return (
+            <div>
+            <ThemeProvider theme={theme}>
+            <List>
+                <AppBar position="static" color="secondary">
+                    <Typography variant="h5" style={{margin: "10px"}}>
+                    Practices
+                    </Typography>
+                </AppBar>
+                <Divider/>
+                {this.loadPractices()}
+            </List>
+            </ThemeProvider>
+            </div>
+        );
+    }
+}
+
+const mapStateToProps = state => ({
+    admin_mode: state.admin_mode,
+    practices: state.practices,
+    player_id: state.player_id
+});
+
+const mapDispatchToProps = dispatch => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Practices);

@@ -6,5 +6,5 @@ export default createMuiTheme({
 	palette: {
 		primary: red,
 		secondary: brown,
-	}
+	},
 });
