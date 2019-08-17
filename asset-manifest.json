@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/Quidditch-Scheduler/static/js/main.241f0eae.chunk.js",
+    "main.js.map": "/Quidditch-Scheduler/static/js/main.241f0eae.chunk.js.map",
+    "runtime~main.js": "/Quidditch-Scheduler/static/js/runtime~main.6df91746.js",
+    "runtime~main.js.map": "/Quidditch-Scheduler/static/js/runtime~main.6df91746.js.map",
+    "static/js/2.48237d71.chunk.js": "/Quidditch-Scheduler/static/js/2.48237d71.chunk.js",
+    "static/js/2.48237d71.chunk.js.map": "/Quidditch-Scheduler/static/js/2.48237d71.chunk.js.map",
+    "index.html": "/Quidditch-Scheduler/index.html",
+    "precache-manifest.78b0931cf20b513135cf91fdb37c1aa1.js": "/Quidditch-Scheduler/precache-manifest.78b0931cf20b513135cf91fdb37c1aa1.js",
+    "service-worker.js": "/Quidditch-Scheduler/service-worker.js"
+  }
+}
