@@ -21,20 +21,28 @@ import Button from '@material-ui/core/Button';
 
 import theme from "./theme.js";
 
+const blank_practice = {
+    location: "",
+    day: [Number(getToday().split("-")[1]), Number(getToday().split("-")[2]), Number(getToday().split("-")[0])],
+    start: [6,0,"PM"],
+    end: [8,0,"PM"],
+    accepted: [],
+    denied: []
+};
+
+function getToday() {
+    let today = new Date();
+    return today.getFullYear()+"-"+(today.getMonth()+1 < 9 ? "0"+(today.getMonth()+1) : today.getMonth()+1)+"-"+today.getDate();
+}
+
 class Practices extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            practice: {
-                location: "",
-                day: [Number(this.getToday().split("-")[1]), Number(this.getToday().split("-")[2]), Number(this.getToday().split("-")[0])],
-                start: [6,0,"PM"],
-                end: [8,0,"PM"],
-                accepted: [],
-                denied: []
-            },
+            practice: blank_practice,
             id: ""
         };
+        console.log(this.state)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -69,7 +77,7 @@ class Practices extends Component {
         .then(item => {
             console.log(item.id);
             this.setState({id: item.id});
-        }).then(() => {
+        }).then((item) => {
             let newPractices = _.cloneDeep(this.props.practices);
             let newPrac = _.cloneDeep(this.state.practice);
             newPrac.id = this.state.id;
@@ -82,6 +90,7 @@ class Practices extends Component {
                 }
             });
             this.props.storePractices(newPractices);
+            this.props.setOpenPractice(this.state.id);
         });
     }
 
@@ -143,11 +152,6 @@ class Practices extends Component {
         return prac.day[0]+"/"+prac.day[1];
     }
 
-    getToday() {
-        let today = new Date();
-        return today.getFullYear()+"-"+(today.getMonth()+1 < 9 ? "0"+(today.getMonth()+1) : today.getMonth()+1)+"-"+today.getDate();
-    }
-
     render() {
         return (
             <div>
@@ -185,7 +189,7 @@ class Practices extends Component {
                             label="Day"
                             type="date"
                             format="MM/dd/yyyy"
-                            defaultValue={this.getToday()}
+                            defaultValue={getToday()}
                             InputLabelProps={{
                                 shrink: true,
                             }}

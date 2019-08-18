@@ -54,7 +54,11 @@ class HomePage extends Component {
                     }
                 });
 				this.props.storePractices(data);
-                this.props.setOpenPractice(data[0].id)
+                if (data.length > 0) {
+                    this.props.setOpenPractice(data[0].id);
+                } else {
+                    this.props.setOpenPractice("add");
+                }
 			});
     }
 
