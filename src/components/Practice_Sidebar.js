@@ -105,38 +105,63 @@ class Practices extends Component {
 
     loadPractices() {
         if (!this.props.practices) return null;
-        let events = this.props.practices;
-        return events.map(item => {
-            return(
-                <ListItem button key={item.id}>
-                    <ListItemAvatar>
-                        <Avatar style={{width: "60px", height: "60px"}}>
-                        <Typography variant="h5" style={{margin: "10px"}}>
-                            {item.day[0]+"/"+item.day[1]}
-                        </Typography>
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary = {item.location}
-                        secondary = {item.start[0]+":"+(item.start[1] < 10 ? "0"+item.start[1] : item.start[1])+(item.start[2] === item.end[2] ? "" : " ("+item.start[2]+")")+" - "+item.end[0]+":"+(item.end[1] < 10 ? "0"+item.end[1] : item.end[1])+" ("+item.end[2]+")"}
-                        style = {{marginLeft: "20px"}}
-                        />
-                    <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isAccepted(item.id) ? "primary" : "default"} onClick={() => this.acceptPractice(item.id)}>
-                            <UpVote/>
+        let practices = this.props.practices;
+        let upcomming_prac = practices.filter(item => {
+            return !item.expired;
+        })
+        let past_prac = _.reverse(practices.filter(item => {
+            return item.expired;
+        }));
+
+        let events = []
+
+        for (let p in upcomming_prac) {
+            console.log(p)
+            events.push(this.genPracticeItem(upcomming_prac[p]));
+        }
+        events.push(<Divider key="divider"/>)
+        for (let p in past_prac) {
+            console.log(p)
+            events.push(this.genPracticeItem(past_prac[p]));
+        }
+
+        return events;
+    }
+
+    genPracticeItem(item) {
+        return(
+            <ListItem button key={item.id}>
+                <ListItemAvatar>
+                    <Avatar style={{width: "60px", height: "60px"}}>
+                    <Typography variant="h5" style={{margin: "10px"}}>
+                        {item.day[0]+"/"+item.day[1]}
+                    </Typography>
+                    </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                    primary = {item.location}
+                    secondary = {item.start[0]+":"+(item.start[1] < 10 ? "0"+item.start[1] : item.start[1])+(item.start[2] === item.end[2] ? "" : " ("+item.start[2]+")")+" - "+item.end[0]+":"+(item.end[1] < 10 ? "0"+item.end[1] : item.end[1])+" ("+item.end[2]+")"}
+                    style = {{marginLeft: "20px"}}
+                    />
+                <ListItemSecondaryAction>
+                    {!item.expired ?
+                        <div>
+                    <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isAccepted(item.id) ? "primary" : "default"} onClick={() => this.acceptPractice(item.id)}>
+                        <UpVote/>
+                    </IconButton>
+                    <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isDenied(item.id) ? "primary" : "default"} onClick={() => this.denyPractice(item.id)}>
+                        <DownVote/>
+                    </IconButton>
+                    </div>
+                    : null }
+                    {this.props.admin_mode ?
+                        <IconButton edge="end" aria-label="edit">
+                            <EditIcon/>
                         </IconButton>
-                        <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isDenied(item.id) ? "primary" : "default"} onClick={() => this.denyPractice(item.id)}>
-                            <DownVote/>
-                        </IconButton>
-                        {this.props.admin_mode ?
-                            <IconButton edge="end" aria-label="edit">
-                                <EditIcon/>
-                            </IconButton>
-                            : null}
-                    </ListItemSecondaryAction>
-                </ListItem>
-            )
-        });
+                        : null}
+                </ListItemSecondaryAction>
+            </ListItem>
+        );
     }
 
     render() {
