@@ -130,50 +130,52 @@ class Register extends Component {
 				variant="outlined"
 				fullWidth
 			/>
-			<FormControlLabel
-				label="Chaser"
-				control={
-					<Checkbox
-						checked={this.state.chck_chaser}
-						onChange={this.handleChange}
-						color="primary"
-						id = "chck_chaser"
-					/>
-				}
-			/>
-			<FormControlLabel
-				label="Beater"
-				control={
-					<Checkbox
-						checked={this.state.chck_beater}
-						onChange={this.handleChange}
-						color="primary"
-						id = "chck_beater"
-					/>
-				}
-			/>
-			<FormControlLabel
-				label="Keeper"
-				control={
-					<Checkbox
-						checked={this.state.chck_keeper}
-						onChange={this.handleChange}
-						color="primary"
-						id = "chck_keeper"
-					/>
-				}
-			/>
-			<FormControlLabel
-				label="Seeker"
-				control={
-					<Checkbox
-						checked={this.state.chck_seeker}
-						onChange={this.handleChange}
-						color="primary"
-						id = "chck_seeker"
-					/>
-				}
-			/>
+            <div>
+    			<FormControlLabel
+    				label="Chaser"
+    				control={
+    					<Checkbox
+    						checked={this.state.chck_chaser}
+    						onChange={this.handleChange}
+    						color="primary"
+    						id = "chck_chaser"
+    					/>
+    				}
+    			/>
+    			<FormControlLabel
+    				label="Beater"
+    				control={
+    					<Checkbox
+    						checked={this.state.chck_beater}
+    						onChange={this.handleChange}
+    						color="primary"
+    						id = "chck_beater"
+    					/>
+    				}
+    			/>
+    			<FormControlLabel
+    				label="Keeper"
+    				control={
+    					<Checkbox
+    						checked={this.state.chck_keeper}
+    						onChange={this.handleChange}
+    						color="primary"
+    						id = "chck_keeper"
+    					/>
+    				}
+    			/>
+    			<FormControlLabel
+    				label="Seeker"
+    				control={
+    					<Checkbox
+    						checked={this.state.chck_seeker}
+    						onChange={this.handleChange}
+    						color="primary"
+    						id = "chck_seeker"
+    					/>
+    				}
+    			/>
+            </div>
             <TextField
 				id="email"
 				label="Email"

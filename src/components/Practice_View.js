@@ -4,6 +4,7 @@ import firestore from "../modules/firestore.js";
 import _ from "lodash";
 
 import { ThemeProvider } from '@material-ui/styles';
+import Grid from "@material-ui/core/Grid";
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -177,12 +178,14 @@ class Practices extends Component {
                 <div>
                     <Divider style={{margin: "10px"}}/>
                     <CardContent>
+                    <Grid container>
                         <TextField
                             id="location"
                             label="Location"
                             type="text"
                             variant="outlined"
                             onChange={this.handleChange}
+                            style={{marginBottom:"20px"}}
                         />
                         <TextField
                             id="day"
@@ -197,7 +200,7 @@ class Practices extends Component {
                                 step: 900, // 15 min
                             }}
                             variant="outlined"
-                            style={{marginLeft:"10px"}}
+                            style={{marginLeft:"10px", marginBottom:"20px"}}
                             onChange={this.handleChange}
                         />
                         <TextField
@@ -212,7 +215,7 @@ class Practices extends Component {
                                 step: 900, // 15 min
                             }}
                             variant="outlined"
-                            style={{marginLeft:"10px"}}
+                            style={{marginLeft:"10px", marginBottom:"20px"}}
                             onChange={this.handleChange}
                         />
                         <TextField
@@ -227,12 +230,13 @@ class Practices extends Component {
                                 step: 900, // 15 min
                             }}
                             variant="outlined"
-                            style={{marginLeft:"10px"}}
+                            style={{marginLeft:"10px", marginBottom:"20px"}}
                             onChange={this.handleChange}
                         />
                         <Button variant="contained" size="large" color="primary" style={{marginLeft:"10px"}} onClick={this.handleSubmit}>
         					Add Practice
         				</Button>
+                    </Grid>
                     </CardContent>
                 </div> : null }
             </Card>
