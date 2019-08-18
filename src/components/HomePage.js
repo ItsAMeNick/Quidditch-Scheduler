@@ -34,6 +34,7 @@ class HomePage extends Component {
         window.addEventListener('resize', this.updateWindowDimensions);
 
         //Get the Player's Information
+        if (!this.props.player_id) return null;
 		firestore.collection("players").doc(this.props.player_id).get()
 			.then(doc => {
 				this.setState(doc.data());
@@ -42,6 +43,16 @@ class HomePage extends Component {
         firestore.collection("practices").get()
 			.then(querySnapshot => {
 				let data = querySnapshot.docs.map(doc => {return {...doc.data(), id: doc.id}});
+                data = data.map(item => {
+                    item["expired"] = Date.now() > this.getPracticeMilli(item.day, item.start);
+                    return item;
+                }).sort((item1, item2) => {
+                    if (this.getPracticeMilli(item1.day, item1.start) > this.getPracticeMilli(item2.day, item2.start)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                })
 				this.props.storePractices(data);
                 this.props.setOpenPractice(data[0].id)
 			});
@@ -53,6 +64,12 @@ class HomePage extends Component {
 
     updateWindowDimensions() {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
+    }
+
+    getPracticeMilli(day, start) {
+        let date = day[0]+"/"+day[1]+"/"+day[2];
+        let time = start[0]+":"+start[1]+" "+start[2];
+        return Date.parse(date+" "+time);
     }
 
     setupPage() {
@@ -86,7 +103,7 @@ class HomePage extends Component {
 						<Typography variant="h4">
 							Welcome, {this.state.first_name}
 						</Typography>
-                        {this.props.admin_mode ? //location.reload();
+                        {this.props.admin_mode ?
                             <Admin style={{marginLeft: "auto"}}/>
                         : null}
                         <IconButton edge="end" onClick={() => this.props.logout()}style={{marginLeft: "auto"}}>
@@ -95,6 +112,7 @@ class HomePage extends Component {
 					</Toolbar>
 				</AppBar>
             </div>
+            <br/>
             <div>
             <Grid container>
                 {this.setupPage()}

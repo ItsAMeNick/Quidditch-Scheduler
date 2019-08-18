@@ -1,8 +1,8 @@
 import _ from "lodash";
 
 const initialState = {
-    authenticated: false,
-	player_id: "",
+    authenticated: true,
+	player_id: "Di9rmyH39NZy8lJtkEQo",
 	admin_mode: false,
     practices: null,
     open_practice: 0

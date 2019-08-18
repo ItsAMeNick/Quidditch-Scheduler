@@ -30,6 +30,17 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        //When the enter key is pressed while on the login page
+        //Process the login
+        document.addEventListener('keyup', (k) => {
+            if (k.keyCode === 13) {
+                k.preventDefault();
+                document.getElementById("login_button").click();
+            }
+        })
+    }
+
 	handleChange(event) {
 		if (event.target.id === "username") {
 			this.setState({username: event.target.value})
@@ -66,48 +77,66 @@ class Login extends Component {
     render() {
         return (
             <ThemeProvider theme={theme}>
-				<TextField
-					id="username"
-					label="Username"
-					value={this.state.username}
-					onChange={this.handleChange}
-					margin="normal"
-					variant="outlined"
-					fullWidth
-				/>
-				<TextField
-					id="password"
-					variant="outlined"
-					type={this.state.showPassword ? 'text' : 'password'}
-					label="Password"
-					value={this.state.password}
-					onChange={this.handleChange}
-					fullWidth
-					margin="normal"
-					InputProps={{
-						endAdornment: (
-							<InputAdornment position="end">
-								<IconButton
-									edge="end"
-									aria-label="toggle password visibility"
-									onClick={this.handleClickShowPassword}
-									onMouseDown={this.handleMouseDownPassword}
-								>
-									{!this.state.showPassword ? <VisibilityOff/> : <Visibility />}
-								</IconButton>
-							</InputAdornment>
-						),
-					}}
-				/>
-				<Grid
-					container
-					alignItems="center"
-					justify="center"
-				>
-	                <Button variant="contained" size="large" color="primary" style={style} onClick={this.handleSubmit}>
+            <Grid
+                container
+                alignItems="center"
+                justify="center"
+            >
+                <Grid item xs={6} md={4}>
+    				<TextField
+    					id="username"
+    					label="Username"
+    					value={this.state.username}
+    					onChange={this.handleChange}
+    					margin="normal"
+    					variant="outlined"
+    					fullWidth
+    				/>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                alignItems="center"
+                justify="center"
+            >
+                <Grid item xs={6} md={4}>
+    				<TextField
+    					id="password"
+    					variant="outlined"
+    					type={this.state.showPassword ? 'text' : 'password'}
+    					label="Password"
+    					value={this.state.password}
+    					onChange={this.handleChange}
+    					fullWidth
+    					margin="normal"
+    					InputProps={{
+    						endAdornment: (
+    							<InputAdornment position="end">
+    								<IconButton
+    									edge="end"
+    									aria-label="toggle password visibility"
+    									onClick={this.handleClickShowPassword}
+    									onMouseDown={this.handleMouseDownPassword}
+    								>
+    									{!this.state.showPassword ? <VisibilityOff/> : <Visibility />}
+    								</IconButton>
+    							</InputAdornment>
+    						),
+    					}}
+    				/>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                alignItems="center"
+                justify="center"
+            >
+                <Grid item>
+	                <Button id="login_button" variant="contained" size="large" color="primary" style={style} onClick={this.handleSubmit}>
 						Login
 					</Button>
-				</Grid>
+                </Grid>
+			</Grid>
             </ThemeProvider>
         );
     }

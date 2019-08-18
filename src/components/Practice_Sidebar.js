@@ -32,6 +32,7 @@ class Practices extends Component {
     isAccepted(id) {
         for (let p in this.props.practices) {
             if (this.props.practices[p].id !== id) continue;
+            if (!this.props.practices[p].accepted) continue;
             if (this.props.practices[p].accepted.includes(this.props.player_id)) {
                 return true;
             } else {
@@ -44,6 +45,7 @@ class Practices extends Component {
     isDenied(id) {
         for (let p in this.props.practices) {
             if (this.props.practices[p].id !== id) continue;
+            if (!this.props.practices[p].denied) continue;
             if (this.props.practices[p].denied.includes(this.props.player_id)) {
                 return true;
             } else {
@@ -103,7 +105,8 @@ class Practices extends Component {
 
     loadPractices() {
         if (!this.props.practices) return null;
-        return this.props.practices.map(item => {
+        let events = this.props.practices;
+        return events.map(item => {
             return(
                 <ListItem button key={item.id}>
                     <ListItemAvatar>
