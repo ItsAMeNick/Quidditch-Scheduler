@@ -82,7 +82,7 @@ class Login extends Component {
                 alignItems="center"
                 justify="center"
             >
-                <Grid item xs={6} md={4}>
+                <Grid item xs={12} sm={10} md={6}>
     				<TextField
     					id="username"
     					label="Username"
@@ -99,7 +99,7 @@ class Login extends Component {
                 alignItems="center"
                 justify="center"
             >
-                <Grid item xs={6} md={4}>
+                <Grid item xs={12} sm={10} md={6}>
     				<TextField
     					id="password"
     					variant="outlined"
