@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Quidditch-Scheduler/precache-manifest.abd91e3fe435f92c16066e16d6ef9e9d.js"
+  "/Quidditch-Scheduler/precache-manifest.66f7cebe9fd84c14d4fafb634e0e4f49.js"
 );
 
 self.addEventListener('message', (event) => {
