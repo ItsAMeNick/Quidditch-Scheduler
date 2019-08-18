@@ -67,20 +67,22 @@ class Practices extends Component {
     handleSubmit() {
         firestore.collection("practices").add(this.state.practice)
         .then(item => {
+            console.log(item.id);
             this.setState({id: item.id});
-        })
-        let newPractices = _.cloneDeep(this.props.practices);
-        let newPrac = _.cloneDeep(this.state.practice);
-        newPrac.id = this.state.id;
-        newPractices.push(newPrac);
-        newPractices.sort((item1, item2) => {
-            if (this.getPracticeMilli(item1.day, item1.start) > this.getPracticeMilli(item2.day, item2.start)) {
-                return 1;
-            } else {
-                return -1;
-            }
+        }).then(() => {
+            let newPractices = _.cloneDeep(this.props.practices);
+            let newPrac = _.cloneDeep(this.state.practice);
+            newPrac.id = this.state.id;
+            newPractices.push(newPrac);
+            newPractices.sort((item1, item2) => {
+                if (this.getPracticeMilli(item1.day, item1.start) > this.getPracticeMilli(item2.day, item2.start)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
+            this.props.storePractices(newPractices);
         });
-        this.props.storePractices(newPractices)
     }
 
     getPracticeMilli(day, start) {

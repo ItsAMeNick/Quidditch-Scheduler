@@ -58,6 +58,7 @@ class Practices extends Component {
     }
 
     acceptPractice(id) {
+        if (!id) return null;
         if (this.isAccepted(id)) return null;
         firestore.collection("practices").doc(id).get().then(doc => {
             let newPractice = doc.data();
