@@ -52,7 +52,7 @@ class HomePage extends Component {
                     } else {
                         return -1;
                     }
-                })
+                });
 				this.props.storePractices(data);
                 this.props.setOpenPractice(data[0].id)
 			});
@@ -104,7 +104,7 @@ class HomePage extends Component {
 							Welcome, {this.state.first_name}
 						</Typography>
                         {this.props.admin_mode ?
-                            <Admin style={{marginLeft: "auto"}}/>
+                            <Admin/>
                         : null}
                         <IconButton edge="end" onClick={() => this.props.logout()}style={{marginLeft: "auto"}}>
                             <LogoutIcon/>

@@ -3,7 +3,7 @@ import _ from "lodash";
 const initialState = {
     authenticated: true,
 	player_id: "Di9rmyH39NZy8lJtkEQo",
-	admin_mode: false,
+	admin_mode: true,
     practices: null,
     open_practice: 0
 };

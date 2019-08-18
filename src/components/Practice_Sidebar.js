@@ -6,6 +6,7 @@ import _ from "lodash";
 import { ThemeProvider } from '@material-ui/styles';
 
 import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
@@ -14,6 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import AddBox from '@material-ui/icons/AddBox';
 
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
@@ -116,12 +118,10 @@ class Practices extends Component {
         let events = []
 
         for (let p in upcomming_prac) {
-            console.log(p)
             events.push(this.genPracticeItem(upcomming_prac[p]));
         }
         events.push(<Divider key="divider"/>)
         for (let p in past_prac) {
-            console.log(p)
             events.push(this.genPracticeItem(past_prac[p]));
         }
 
@@ -130,7 +130,7 @@ class Practices extends Component {
 
     genPracticeItem(item) {
         return(
-            <ListItem button key={item.id}>
+            <ListItem button key={item.id} onClick={() => this.props.setOpenPractice(item.id)}>
                 <ListItemAvatar>
                     <Avatar style={{width: "60px", height: "60px"}}>
                     <Typography variant="h5" style={{margin: "10px"}}>
@@ -144,21 +144,19 @@ class Practices extends Component {
                     style = {{marginLeft: "20px"}}
                     />
                 <ListItemSecondaryAction>
-                    {!item.expired ?
-                        <div>
-                    <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isAccepted(item.id) ? "primary" : "default"} onClick={() => this.acceptPractice(item.id)}>
-                        <UpVote/>
-                    </IconButton>
-                    <IconButton edge="end" aria-label="edit" style={{marginRight: "10px"}} color={this.isDenied(item.id) ? "primary" : "default"} onClick={() => this.denyPractice(item.id)}>
-                        <DownVote/>
-                    </IconButton>
-                    </div>
-                    : null }
+                    {!item.expired ? <React.Fragment>
+                        <IconButton edge="end" style={{marginRight: "10px"}} color={this.isAccepted(item.id) ? "primary" : "default"} onClick={() => this.acceptPractice(item.id)}>
+                            <UpVote/>
+                        </IconButton>
+                        <IconButton edge="end" style={{marginRight: "10px"}} color={this.isDenied(item.id) ? "primary" : "default"} onClick={() => this.denyPractice(item.id)}>
+                            <DownVote/>
+                        </IconButton>
+                    </React.Fragment> : null }
                     {this.props.admin_mode ?
-                        <IconButton edge="end" aria-label="edit">
+                        <IconButton edge="end">
                             <EditIcon/>
                         </IconButton>
-                        : null}
+                    : null}
                 </ListItemSecondaryAction>
             </ListItem>
         );
@@ -170,9 +168,16 @@ class Practices extends Component {
             <ThemeProvider theme={theme}>
             <List>
                 <AppBar position="static" color="secondary">
+                <Toolbar>
                     <Typography variant="h5" style={{margin: "10px"}}>
                     Practices
                     </Typography>
+                    {this.props.admin_mode ?
+                        <IconButton style={{marginLeft: "auto"}} onClick={() => this.props.addPractice()}>
+                            <AddBox/>
+                        </IconButton>
+                    : <div/>}
+                </Toolbar>
                 </AppBar>
                 <Divider/>
                 {this.loadPractices()}
@@ -194,6 +199,14 @@ const mapDispatchToProps = dispatch => ({
         type: "update_practices",
         payload: practices
     }),
+    setOpenPractice: (id) => dispatch({
+        type: "set_open_practice",
+        payload: id
+    }),
+    addPractice: () => dispatch({
+        type: "set_open_practice",
+        payload: "add"
+    })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Practices);
