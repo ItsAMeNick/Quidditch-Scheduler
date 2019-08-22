@@ -154,7 +154,7 @@ class Practices extends Component {
                         </IconButton>
                     </React.Fragment> : null }
                     {this.props.admin_mode ?
-                        <IconButton edge="end">
+                        <IconButton edge="end" onClick={() => this.props.setOpenPractice("edit-"+item.id)}>
                             <EditIcon/>
                         </IconButton>
                     : null}

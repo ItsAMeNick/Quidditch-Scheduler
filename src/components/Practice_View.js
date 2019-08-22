@@ -43,7 +43,6 @@ class Practices extends Component {
             practice: blank_practice,
             id: ""
         };
-        console.log(this.state)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -74,25 +73,43 @@ class Practices extends Component {
     }
 
     handleSubmit() {
-        firestore.collection("practices").add(this.state.practice)
-        .then(item => {
-            console.log(item.id);
-            this.setState({id: item.id});
-        }).then((item) => {
-            let newPractices = _.cloneDeep(this.props.practices);
-            let newPrac = _.cloneDeep(this.state.practice);
-            newPrac.id = this.state.id;
-            newPractices.push(newPrac);
-            newPractices.sort((item1, item2) => {
-                if (this.getPracticeMilli(item1.day, item1.start) > this.getPracticeMilli(item2.day, item2.start)) {
-                    return 1;
-                } else {
-                    return -1;
-                }
+        if (this.props.admin_mode && this.props.open_practice === "add") {
+            firestore.collection("practices").add(this.state.practice)
+            .then(item => {
+                console.log(item.id);
+                this.setState({id: item.id});
+            }).then((item) => {
+                let newPractices = _.cloneDeep(this.props.practices);
+                let newPrac = _.cloneDeep(this.state.practice);
+                newPrac.id = this.state.id;
+                newPractices.push(newPrac);
+                newPractices.sort((item1, item2) => {
+                    if (this.getPracticeMilli(item1.day, item1.start) > this.getPracticeMilli(item2.day, item2.start)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+                this.props.storePractices(newPractices);
+                this.props.setOpenPractice(this.state.id);
             });
-            this.props.storePractices(newPractices);
-            this.props.setOpenPractice(this.state.id);
-        });
+        } else {
+            console.log(this.state);
+            firestore.collection("practices").doc(this.state.id).set(this.state.practice)
+            .then(item => {
+                let newPractices = _.cloneDeep(this.props.practices);
+                newPractices[this.indexFromId(this.state.id)] = this.state.practice
+                newPractices.sort((item1, item2) => {
+                    if (this.getPracticeMilli(item1.day, item1.start) > this.getPracticeMilli(item2.day, item2.start)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+                this.props.storePractices(newPractices);
+                this.props.setOpenPractice(this.state.id);
+            })
+        }
     }
 
     getPracticeMilli(day, start) {
@@ -153,6 +170,20 @@ class Practices extends Component {
         return prac.day[0]+"/"+prac.day[1];
     }
 
+    componentDidUpdate() {
+        console.log(this.props.open_practice);
+        console.log(this.state)
+        if (this.props.open_practice && this.props.open_practice.split("-")[0] === "edit") {
+            if (this.props.open_practice.split("-")[1]) {
+                this.setState({
+                    id: this.props.open_practice.split("-")[1],
+                    practice: this.props.practices[this.indexFromId(this.props.open_practice.split("-")[1])]
+                })
+                this.props.setOpenPractice("edit-")
+            }
+        }
+    }
+
     render() {
         return (
             <div>
@@ -166,15 +197,15 @@ class Practices extends Component {
                         </Typography>
                       </Avatar>
                     }
-                    action={ this.props.admin_mode ?
-                      <IconButton aria-label="settings">
+                    action={ this.props.admin_mode && (this.props.open_practice && this.props.open_practice.split("-")[0] !== "edit") ?
+                      <IconButton onClick={() => this.props.setOpenPractice("edit-"+this.props.open_practice)}>
                         <EditIcon />
                       </IconButton> : null
                     }
                     title = {this.getTitle()}
                     subheader = {this.getSubHeader()}
                 />
-                {this.props.admin_mode && this.props.open_practice === "add" ?
+                {(this.props.admin_mode && this.props.open_practice) && (this.props.open_practice === "add" || this.props.open_practice.split("-")[0] === "edit") ?
                 <div>
                     <Divider style={{margin: "10px"}}/>
                     <CardContent>
@@ -233,8 +264,12 @@ class Practices extends Component {
                             style={{marginLeft:"10px", marginBottom:"20px"}}
                             onChange={this.handleChange}
                         />
-                        <Button variant="contained" size="large" color="primary" style={{marginLeft:"10px"}} onClick={this.handleSubmit}>
-        					Add Practice
+                        <Button variant="contained" size="large" color="primary" style={{marginLeft:"10px"}} onClick={() => this.handleSubmit()}>
+                            {this.props.admin_mode && this.props.open_practice === "add" ?
+                                "Add Practice"
+                            :
+                                "Save"
+                            }
         				</Button>
                     </Grid>
                     </CardContent>
