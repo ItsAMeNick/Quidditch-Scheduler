@@ -64,8 +64,8 @@ class Practices extends Component {
             let newPractice = doc.data();
             newPractice.accepted.push(this.props.player_id);
             if (this.isDenied(id)) {
-                newPractice.denied = _.remove(newPractice.denied, item => {
-                    return item === id;
+                newPractice.denied = newPractice.denied.filter(item => {
+                    return item !== this.props.player_id;
                 });
             }
             firestore.collection("practices").doc(id).set(newPractice);
@@ -88,8 +88,8 @@ class Practices extends Component {
             let newPractice = doc.data();
             newPractice.denied.push(this.props.player_id);
             if (this.isAccepted(id)) {
-                newPractice.accepted = _.remove(newPractice.accepted, item => {
-                    return item === id;
+                newPractice.accepted = newPractice.accepted.filter(item => {
+                    return item !== this.props.player_id;
                 });
             }
             firestore.collection("practices").doc(id).set(newPractice);
@@ -170,7 +170,7 @@ class Practices extends Component {
             <List>
                 <AppBar position="static" color="secondary">
                 <Toolbar>
-                    <Typography variant="h5" style={{margin: "10px"}}>
+                    <Typography variant="h5">
                     Practices
                     </Typography>
                     {this.props.admin_mode ?
