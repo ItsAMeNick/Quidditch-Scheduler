@@ -84,7 +84,6 @@ class Practices extends Component {
         if (this.props.admin_mode && this.props.open_practice === "add") {
             firestore.collection("practices").add(this.state.practice)
             .then(item => {
-                console.log(item.id);
                 this.setState({id: item.id});
             }).then((item) => {
                 let newPractices = _.cloneDeep(this.props.practices);
@@ -349,7 +348,32 @@ class Practices extends Component {
                         </Grid>
                     </CardContent>
                 </div>
-                : null
+                :
+                <div>
+                    <Divider style={{margin: "0px 10px 0px 10px"}}/>
+                    <CardContent style={{padding: "0px"}}>
+                        <Grid container>
+                            <Grid item xs={12} sm={6}>
+                            <List>
+                                <ListItem>
+                                <Typography variant="h6">
+                                    Attending {this.props.open_practice ? "(" + this.props.practices[this.indexFromId(this.props.open_practice)].accepted.length + ")" : null}
+                                </Typography>
+                                </ListItem>
+                            </List>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                            <List>
+                                <ListItem>
+                                <Typography variant="h6">
+                                    Not Attending {this.props.open_practice ? "(" + this.props.practices[this.indexFromId(this.props.open_practice)].denied.length + ")" : null}
+                                </Typography>
+                                </ListItem>
+                            </List>
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                </div>
                 }
             </Card>
             </ThemeProvider>

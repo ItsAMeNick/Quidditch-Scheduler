@@ -63,13 +63,11 @@ class HomePage extends Component {
 
             firestore.collection("players").get()
     			.then(querySnapshot => {
-                    console.log(querySnapshot);
     				let data = {};
                     for (let p in querySnapshot.docs) {
                         let doc = querySnapshot.docs[p];
                         data[doc.id] = {...doc.data(), id: doc.id}
                     }
-                    console.log(data);
     				this.props.storePlayers(data);
     			});
     }
