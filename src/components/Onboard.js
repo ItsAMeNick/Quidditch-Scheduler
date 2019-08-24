@@ -24,7 +24,6 @@ class Onboard extends Component {
             username:'',
             password:'',
             loginscreen:[],
-            loginmessage:'',
             buttonLabel:'Set-up a new account',
             isLogin:true
         };
@@ -34,33 +33,26 @@ class Onboard extends Component {
     componentDidMount(){
         var loginscreen=[];
         loginscreen.push(<Login key="login"/>);
-        var loginmessage = "Not registered yet, Register Now";
         this.setState({
             loginscreen:loginscreen,
-            loginmessage:loginmessage
         });
     }
 
     handleSwitch() {
         // console.log("event",event);
-        var loginmessage;
 		var loginscreen=[];
         if(this.state.isLogin){
             loginscreen.push(<Register key="register"/>);
-            loginmessage = "Already registered.Go to Login";
             this.setState({
                 loginscreen:loginscreen,
-                loginmessage:loginmessage,
                 buttonLabel:"Already have an account?",
                 isLogin:false
             })
         }
         else{
             loginscreen.push(<Login key="login"/>);
-            loginmessage = "Not Registered yet.Go to registration";
             this.setState({
                 loginscreen:loginscreen,
-                loginmessage:loginmessage,
                 buttonLabel:"Set-up a new account",
                 isLogin:true
             })
@@ -80,16 +72,21 @@ class Onboard extends Component {
 				<Grid container>
 					<Grid item xs={true}></Grid>
 					<Grid item xs={9}>
-					{this.state.loginscreen}
+					               {this.state.loginscreen}
 					</Grid>
 					<Grid item xs={true}></Grid>
 				</Grid>
-                <div>
-                    {this.state.loginmessage}
-                    <Button variant="contained" size="large" color="primary" style={style} onClick={this.handleSwitch}>
-						{this.state.buttonLabel}
-					</Button>
-                </div>
+                <Grid
+                    container
+                    alignItems="center"
+                    justify="center"
+                >
+                    <Grid item>
+                        <Button variant="contained" size="large" color="primary" style={style} onClick={this.handleSwitch}>
+    						{this.state.buttonLabel}
+    					</Button>
+                    </Grid>
+                </Grid>
             </ThemeProvider>
         );
     }
