@@ -34,6 +34,8 @@ class Register extends Component {
 			chck_beater: false,
 			chck_keeper: false,
 			chck_seeker: false,
+
+            errorMessage: "",
         };
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -62,15 +64,43 @@ class Register extends Component {
 	}
 
     handleSubmit(e) {
-        console.log("Registering")
-        firestore.collection("users").where("username","==",this.state.username).get()
+        //Validate form first
+        if (!this.state.first_name) {
+            this.setState({errorMessage: "Registration Error: Invalid first name."})
+            return null;
+        }
+        if (!this.state.last_name) {
+            this.setState({errorMessage: "Registration Error: Invalid last name."})
+            return null;
+        }
+        if (!this.state.chck_chaser && !this.state.chck_beater && !this.state.chck_keeper && !this.state.chck_seeker) {
+            this.setState({errorMessage: "Registration Error: Please select at least one position."})
+            return null;
+        }
+        if (!this.state.email) {
+            this.setState({errorMessage: "Registration Error: Invalid email."})
+            return null;
+        }
+        if (!this.state.username) {
+            this.setState({errorMessage: "Registration Error: Invalid username."})
+            return null;
+        }
+        if (!this.state.password) {
+            this.setState({errorMessage: "Registration Error: Invalid password."})
+            return null;
+        } else if (this.state.password.length < 5) {
+            this.setState({errorMessage: "Registration Error: Password length must be at least 5 characters."})
+            return null;
+        }
+
+        //Handle Database registration
+        firestore.collection("users").where("username","==",this.state.username.toLowerCase()).get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data());
                 console.log(data);
-                if (data.length === 1) {
-                    console.log("Username already exists")
+                if (data.length >= 1) {
+                    this.setState({errorMessage: "Registration Error: This username is unavailable."});
                 } else {
-                    console.log("Username is avaliable")
                     let player = {
                         first_name: this.state.first_name,
                         last_name: this.state.last_name,
@@ -130,7 +160,8 @@ class Register extends Component {
 				variant="outlined"
 				fullWidth
 			/>
-            <div>
+            <Grid container>
+            <Grid item>
     			<FormControlLabel
     				label="Chaser"
     				control={
@@ -142,6 +173,8 @@ class Register extends Component {
     					/>
     				}
     			/>
+            </Grid>
+            <Grid item>
     			<FormControlLabel
     				label="Beater"
     				control={
@@ -153,6 +186,8 @@ class Register extends Component {
     					/>
     				}
     			/>
+                </Grid>
+                <Grid item>
     			<FormControlLabel
     				label="Keeper"
     				control={
@@ -164,6 +199,8 @@ class Register extends Component {
     					/>
     				}
     			/>
+                </Grid>
+                <Grid item>
     			<FormControlLabel
     				label="Seeker"
     				control={
@@ -175,7 +212,8 @@ class Register extends Component {
     					/>
     				}
     			/>
-            </div>
+                </Grid>
+            </Grid>
             <TextField
 				id="email"
 				label="Email"
@@ -218,6 +256,13 @@ class Register extends Component {
 					),
 				}}
 			/>
+            <Grid
+				container
+				alignItems="center"
+				justify="center"
+			>
+			        {this.state.errorMessage}
+			</Grid>
 			<Grid
 				container
 				alignItems="center"
