@@ -24,7 +24,8 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-			showPassword: false
+			showPassword: false,
+            errorMessage: ""
         };
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,10 +59,10 @@ class Login extends Component {
                         this.props.updateAuth(data[0].player_id);
 						this.props.updateAdmin(data[0].admin);
                     } else {
-                        console.log('Bad Password');
+                        this.setState({errorMessage: "Login Failed: Your username/password do not match."})
                     }
                 } else {
-                    console.log("Username not found")
+                    this.setState({errorMessage: "Login Failed: Your username cannot be found."});
                 }
             });
     }
@@ -126,6 +127,15 @@ class Login extends Component {
     				/>
                 </Grid>
             </Grid>
+            <Grid
+                container
+                alignItems="center"
+                justify="center"
+            >
+                <Grid item>
+	                {this.state.errorMessage}
+                </Grid>
+			</Grid>
             <Grid
                 container
                 alignItems="center"
