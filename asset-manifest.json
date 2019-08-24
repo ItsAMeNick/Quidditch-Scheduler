@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/Quidditch-Scheduler/static/js/main.e71c0589.chunk.js",
-    "main.js.map": "/Quidditch-Scheduler/static/js/main.e71c0589.chunk.js.map",
+    "main.js": "/Quidditch-Scheduler/static/js/main.3fd26156.chunk.js",
+    "main.js.map": "/Quidditch-Scheduler/static/js/main.3fd26156.chunk.js.map",
     "runtime~main.js": "/Quidditch-Scheduler/static/js/runtime~main.6df91746.js",
     "runtime~main.js.map": "/Quidditch-Scheduler/static/js/runtime~main.6df91746.js.map",
-    "static/js/2.e3a188b2.chunk.js": "/Quidditch-Scheduler/static/js/2.e3a188b2.chunk.js",
-    "static/js/2.e3a188b2.chunk.js.map": "/Quidditch-Scheduler/static/js/2.e3a188b2.chunk.js.map",
+    "static/js/2.d6ee0ea9.chunk.js": "/Quidditch-Scheduler/static/js/2.d6ee0ea9.chunk.js",
+    "static/js/2.d6ee0ea9.chunk.js.map": "/Quidditch-Scheduler/static/js/2.d6ee0ea9.chunk.js.map",
     "index.html": "/Quidditch-Scheduler/index.html",
-    "precache-manifest.61309edc2fe1a5310b29790d8892a117.js": "/Quidditch-Scheduler/precache-manifest.61309edc2fe1a5310b29790d8892a117.js",
+    "precache-manifest.a761e09ce9ae77446a5395976911ff58.js": "/Quidditch-Scheduler/precache-manifest.a761e09ce9ae77446a5395976911ff58.js",
     "service-worker.js": "/Quidditch-Scheduler/service-worker.js"
   }
 }
