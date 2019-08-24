@@ -1,11 +1,12 @@
 import _ from "lodash";
 
 const initialState = {
-    authenticated: false,
-	player_id: "",
-	admin_mode: false,
+    authenticated: true,
+	player_id: "JnUPPFrGkYxo5YGweeBu",
+	admin_mode: true,
     practices: null,
-    open_practice: 0
+    open_practice: 0,
+    players: null
 };
 
 const sCubeReducer = (state = initialState, action) => {
@@ -44,6 +45,12 @@ const sCubeReducer = (state = initialState, action) => {
     case "update_practices": {
         let newState = _.cloneDeep(state);
         newState.practices = action.payload;
+        return newState;
+    }
+
+    case "update_players": {
+        let newState = _.cloneDeep(state);
+        newState.players = action.payload;
         return newState;
     }
 

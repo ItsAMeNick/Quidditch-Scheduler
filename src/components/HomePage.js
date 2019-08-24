@@ -60,6 +60,18 @@ class HomePage extends Component {
                     this.props.setOpenPractice("add");
                 }
 			});
+
+            firestore.collection("players").get()
+    			.then(querySnapshot => {
+                    console.log(querySnapshot);
+    				let data = {};
+                    for (let p in querySnapshot.docs) {
+                        let doc = querySnapshot.docs[p];
+                        data[doc.id] = {...doc.data(), id: doc.id}
+                    }
+                    console.log(data);
+    				this.props.storePlayers(data);
+    			});
     }
 
     componentWillUnmount() {
@@ -148,7 +160,11 @@ const mapDispatchToProps = dispatch => ({
     setOpenPractice: (id) => dispatch({
         type: "set_open_practice",
         payload: id
-    })
+    }),
+    storePlayers: (players) => dispatch({
+        type: "update_players",
+        payload: players
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

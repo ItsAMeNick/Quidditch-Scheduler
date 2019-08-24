@@ -20,6 +20,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+
+import Chaser from '@material-ui/icons/Brightness1Outlined';
+import Beater from '@material-ui/icons/Brightness1';
+import Keeper from '@material-ui/icons/MoreHorizOutlined';
+import Seeker from '@material-ui/icons/VpnKey';
+
 import theme from "./theme.js";
 
 const blank_practice = {
@@ -171,8 +179,6 @@ class Practices extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.props.open_practice);
-        console.log(this.state)
         if (this.props.open_practice && this.props.open_practice.split("-")[0] === "edit") {
             if (this.props.open_practice.split("-")[1]) {
                 this.setState({
@@ -182,6 +188,46 @@ class Practices extends Component {
                 this.props.setOpenPractice("edit-")
             }
         }
+    }
+
+    getAttendees(prac_id) {
+        if (!prac_id) return null;
+        if (!this.props.players) return null;
+        let prac_index = this.indexFromId(prac_id);
+        let players = this.props.practices[prac_index].accepted;
+        players = players.map(p => {
+            return (
+                <ListItem key={p}>
+                    {this.props.players[p].positions["chaser"] ? <Chaser/> : ""}
+                    {this.props.players[p].positions["beater"] ? <Beater/> : ""}
+                    {this.props.players[p].positions["keeper"] ? <Keeper/> : ""}
+                    {this.props.players[p].positions["seeker"] ? <Seeker/> : ""}
+                    &nbsp;
+                    {this.props.players[p].first_name + " " + this.props.players[p].last_name}
+                </ListItem>
+            );
+        })
+        return players;
+    }
+
+    getNonAttendees(prac_id) {
+        if (!prac_id) return null;
+        if (!this.props.players) return null;
+        let prac_index = this.indexFromId(prac_id);
+        let players = this.props.practices[prac_index].denied;
+        players = players.map(p => {
+            return (
+                <ListItem key={p}>
+                    {this.props.players[p].positions["chaser"] ? <Chaser/> : ""}
+                    {this.props.players[p].positions["beater"] ? <Beater/> : ""}
+                    {this.props.players[p].positions["keeper"] ? <Keeper/> : ""}
+                    {this.props.players[p].positions["seeker"] ? <Seeker/> : ""}
+                    &nbsp;
+                    {this.props.players[p].first_name + " " + this.props.players[p].last_name}
+                </ListItem>
+            );
+        })
+        return players;
     }
 
     render() {
@@ -273,7 +319,38 @@ class Practices extends Component {
         				</Button>
                     </Grid>
                     </CardContent>
-                </div> : null }
+                </div>
+                :
+                this.props.admin_mode ?
+                <div>
+                    <Divider style={{margin: "0px 10px 0px 10px"}}/>
+                    <CardContent style={{padding: "0px"}}>
+                        <Grid container>
+                            <Grid item xs={12} sm={6}>
+                            <List>
+                                <ListItem>
+                                <Typography variant="h6">
+                                    Attending {this.props.open_practice ? "(" + this.props.practices[this.indexFromId(this.props.open_practice)].accepted.length + ")" : null}
+                                </Typography>
+                                </ListItem>
+                                {this.getAttendees(this.props.open_practice)}
+                            </List>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                            <List>
+                                <ListItem>
+                                <Typography variant="h6">
+                                    Not Attending {this.props.open_practice ? "(" + this.props.practices[this.indexFromId(this.props.open_practice)].denied.length + ")" : null}
+                                </Typography>
+                                </ListItem>
+                                {this.getNonAttendees(this.props.open_practice)}
+                            </List>
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                </div>
+                : null
+                }
             </Card>
             </ThemeProvider>
             </div>
@@ -285,7 +362,8 @@ const mapStateToProps = state => ({
     practices: state.practices,
     open_practice: state.open_practice,
     admin_mode: state.admin_mode,
-	player_id: state.player_id
+	player_id: state.player_id,
+    players: state.players
 });
 
 const mapDispatchToProps = dispatch => ({
